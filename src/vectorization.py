@@ -1,5 +1,5 @@
 # Text Vectorization
-from tensorflow.keras import layers
+from tensorflow.keras import layers # type: ignore
 import tensorflow as tf
 
 

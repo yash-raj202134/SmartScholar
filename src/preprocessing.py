@@ -1,7 +1,7 @@
 
 import tensorflow as tf
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split # type: ignore
 
 from ast import literal_eval
 # is used for safely evaluating strings containing Python literals or container displays
@@ -117,4 +117,4 @@ def preprocess(arxiv_data):
     vocabulary_size = len(vocabulary)
     # print(vocabulary_size)
 
-    return train_dataset, validation_dataset,test_dataset,vocabulary_size
+    return train_dataset, validation_dataset,test_dataset,vocabulary_size,lookup

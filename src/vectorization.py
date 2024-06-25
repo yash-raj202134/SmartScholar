@@ -1,7 +1,7 @@
 # Text Vectorization
 from tensorflow.keras import layers # type: ignore
 import tensorflow as tf
-
+import pickle 
 
 
 def vectorization(train_dataset,validation_dataset,test_dataset,vocabulary_size):
@@ -25,5 +25,16 @@ def vectorization(train_dataset,validation_dataset,test_dataset,vocabulary_size)
     train_dataset = train_dataset.map(lambda text, label: (text_vectorizer(text), label), num_parallel_calls=auto).prefetch(auto)
     validation_dataset = validation_dataset.map(lambda text, label: (text_vectorizer(text), label), num_parallel_calls=auto).prefetch(auto)
     test_dataset = test_dataset.map(lambda text, label: (text_vectorizer(text), label), num_parallel_calls=auto).prefetch(auto)
+
+    # Save the configuration of the text vectorizer
+    saved_text_vectorizer_config = text_vectorizer.get_config()
+    with open("models/text_vectorizer_config.pkl", "wb") as f:
+        pickle.dump(saved_text_vectorizer_config, f)
+
+    # save the weights of the text vectorizer
+    text_vectorizer_weights = text_vectorizer.get_weights()
+    with open("models/text_vectorizer_weights.pkl", "wb") as f:
+        pickle.dump(text_vectorizer_weights, f)
+
 
     return train_dataset,validation_dataset,test_dataset

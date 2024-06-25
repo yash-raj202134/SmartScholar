@@ -30,7 +30,7 @@ def create_mlp_mode(lookup):
     return model1
 
 
-def train_model(train_dataset,validation_dataset,lookup):
+def train_model(train_dataset,validation_dataset,test_dataset,lookup):
     
     # Creating shallow_mlp_model (MLP) with dropout layers
     model1 = create_mlp_mode(lookup)
@@ -44,6 +44,9 @@ def train_model(train_dataset,validation_dataset,lookup):
     # Train the model
     # Add early stopping callback.verbose=1
     history = model1.fit(train_dataset,validation_data=validation_dataset,epochs=20,callbacks=[early_stopping])
+    
+    # Save the model
+    model1.save("models/model.h5")
 
     return history
 

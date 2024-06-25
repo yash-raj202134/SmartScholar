@@ -2,7 +2,7 @@
 import tensorflow as tf
 
 from sklearn.model_selection import train_test_split # type: ignore
-
+import pickle
 from ast import literal_eval
 # is used for safely evaluating strings containing Python literals or container displays
 # (e.g., lists, dictionaries) to their corresponding Python objects.
@@ -116,5 +116,10 @@ def preprocess(arxiv_data):
     train_df["abstracts"].str.lower().str.split().apply(vocabulary.update)
     vocabulary_size = len(vocabulary)
     # print(vocabulary_size)
+
+
+    # Save the vocabulary
+    with open("models/vocab.pkl", "wb") as f:
+        pickle.dump(vocab, f)
 
     return train_dataset, validation_dataset,test_dataset,vocabulary_size,lookup

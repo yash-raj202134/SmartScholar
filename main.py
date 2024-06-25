@@ -9,7 +9,7 @@ from src.preprocessing import preprocess
 from src.vectorization import vectorization
 from src.model_trainer import train_model,plot_loss
 from src.model_evaluation import evaluate_model,predict_category,invert_multi_hot
-
+from src.recommendation import sentence_tnfs,print_embeddings,recommendation
 # data = DataIngestion()
 # file_path = data.download_datasets()
 # data.extract_datasets(file_path)
@@ -73,3 +73,65 @@ updated results.'''
 
 predicted_categories = predict_category(new_abstract,model,text_vectorizer, invert_multi_hot)
 print("Predicted Categories:", predicted_categories)
+
+
+
+# recommendations
+
+arxiv_data_copy = arxiv_data.copy()
+arxiv_data_copy.drop(columns = ["terms","abstracts"], inplace = True)
+
+arxiv_data_copy.drop_duplicates(inplace= True)
+arxiv_data_copy.reset_index(drop= True,inplace = True)
+
+pd.set_option('display.max_colwidth', None)
+
+rec_model, embeddings, sentences = sentence_tnfs(arxiv_data= arxiv_data_copy)
+print_embeddings(sentences=sentences,embeddings= embeddings)
+
+
+# exampel usage 1: (use this paper as input (Attention is All you Need))
+input_paper = input("Enter the title of any paper you like")
+recommend_papers = recommendation(
+    input_paper=input_paper,
+    rec_model=rec_model,
+    embeddings=embeddings,
+    sentences=sentences
+    )
+
+print("We recommend to read this paper............")
+print("=============================================")
+for paper in recommend_papers:
+    print(paper)
+
+
+# exampel usage 2: (use this paper as input (BERT: Pre-training of Deep Bidirectional 
+# Transformers for Language Understanding))
+input_paper = input("Enter the title of any paper you like")
+recommend_papers = recommendation(
+    input_paper=input_paper,
+    rec_model=rec_model,
+    embeddings=embeddings,
+    sentences=sentences
+    )
+
+print("We recommend to read this paper............")
+print("=============================================")
+for paper in recommend_papers:
+    print(paper)
+
+
+# exampel usage 3: (use this paper as input (Review of deep learning: concepts,
+#  CNN architectures, challenges, applications, future directions))
+input_paper = input("Enter the title of any paper you like")
+recommend_papers = recommendation(
+    input_paper=input_paper,
+    rec_model=rec_model,
+    embeddings=embeddings,
+    sentences=sentences
+    )
+
+print("We recommend to read this paper............")
+print("=============================================")
+for paper in recommend_papers:
+    print(paper)

@@ -92,8 +92,7 @@ def preprocess(arxiv_data):
     batch_size = 128
     #padding_token: A token used for padding sequences.
     padding_token = "<pad>"
-    #auto = tf.data.AUTOTUNE: auto is assigned the value tf.data.AUTOTUNE,
-    auto = tf.data.AUTOTUNE
+  
 
 
     train_dataset = make_dataset(train_df,train_df,batch_size, is_train=True)
@@ -115,7 +114,7 @@ def preprocess(arxiv_data):
     # Creating vocabulary with uniques words
     vocabulary = set()
     train_df["abstracts"].str.lower().str.split().apply(vocabulary.update)
-    # vocabulary_size = len(vocabulary)
+    vocabulary_size = len(vocabulary)
     # print(vocabulary_size)
 
-    return train_dataset, validation_dataset,test_dataset
+    return train_dataset, validation_dataset,test_dataset,vocabulary_size

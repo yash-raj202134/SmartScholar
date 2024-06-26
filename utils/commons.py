@@ -1,6 +1,8 @@
 import tensorflow as tf
 import numpy as np
-
+from sentence_transformers import util # type: ignore
+import torch # type: ignore
+import pickle
 
 def make_dataset(dataframe,batch_size,lookup,is_train=True):
     """
@@ -21,8 +23,12 @@ def make_dataset(dataframe,batch_size,lookup,is_train=True):
     return dataset.batch(batch_size)
 
 
-def invert_multi_hot(encoded_labels,loaded_vocab):
+def invert_multi_hot(encoded_labels):
     """Reverse a single multi-hot encoded label to a tuple of vocab terms."""
+    # Load the vocabulary
+    with open("models/vocab.pkl", "rb") as f:
+        loaded_vocab = pickle.load(f)
+        
     hot_indices = np.argwhere(encoded_labels == 1.0)[..., 0]
     return np.take(loaded_vocab, hot_indices)
 
@@ -38,3 +44,18 @@ def predict_category(abstract, model, vectorizer, label_lookup):
     predicted_labels = label_lookup(np.round(predictions).astype(int)[0])
 
     return predicted_labels
+
+
+def recommendation(input_paper,rec_model,embeddings,sentences):
+    # Calculate cosine similarity scores between the embeddings of input_paper and all papers in the dataset.
+    cosine_scores = util.cos_sim(embeddings, rec_model.encode(input_paper))
+
+    # Get the indices of the top-k most similar papers based on cosine similarity.
+    top_similar_papers = torch.topk(cosine_scores, dim=0, k=5, sorted=True)
+
+    # Retrieve the titles of the top similar papers.
+    papers_list = []
+    for i in top_similar_papers.indices:
+        papers_list.append(sentences[i.item()])
+
+    return papers_list

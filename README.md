@@ -17,10 +17,33 @@ This repository contains a machine learning project featuring two main functiona
 
 1. **Dataset Preparation:**
    - Prepare your dataset with research paper titles, abstracts, and corresponding subject areas.
+   - Custom dataset are allowed.
 
 2. **Training Models:**
-   - Use the provided notebook to train models for subject area prediction and recommendation generation.
+   - Use the provided sources to train models for subject area prediction and recommendation generation.
+   - main.py file consist of all the necessary scripts to prepare the dataset, train and evaluate the model.
 
+# Installation
+
+- Clone the repository
+```bash
+git clone https://github.com/yash-raj202134/SmartScholar.git
+```
+- Install the required dependencies
+```bash
+pip install -r requirements.txt
+```
+- Download all the resources
+```bash
+python main.py
+```
+- Run the app
+```bash
+streamlit run app.py
+```
+# App 
+![Input](screenshot_app/input.png)
+![output](screenshot_app/output.png)
 # Results
 
 - **Research Papers Recommendation:**
